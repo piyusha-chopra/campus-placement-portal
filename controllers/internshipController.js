@@ -84,5 +84,54 @@ const deleteInternship = async (req,res)=>{
     }
 }
 
+const viewInternship= async(req,res)=>{
+    try{
 
-module.exports = { createInternship, updateInternship, deleteInternship };
+        const pageNum=Number(req.query.page)|| 0;
+        if(!Number.isInteger(pageNum) || pageNum<0){
+            return res.status(400).json({message:'Page number must be a non-negative integer'});
+        }
+        const limit=5;
+        const skipIndex=pageNum*limit;
+        const internships= await Internship.find({isActive:true}).select('-updatedAt -__v').sort({createdAt: -1}).skip(skipIndex).limit(limit);
+
+        const total=await Internship.countDocuments({isActive:true}); //count of total active internships
+        const totalPages=Math.ceil(total/limit);
+
+        res.status(200).json({page:pageNum,limitPerPage:limit,totalActiveInternships:total,totalPages:totalPages,internships:internships});
+
+    }catch(err){
+
+        console.log(err);
+        res.status(500).json({err:'Internal server error'});
+    }
+}
+
+const viewInternshipById= async(req,res)=>{
+    try{
+
+        const internshipId= req.params.id;
+
+        const internship= await Internship.findOne({
+            _id:internshipId,
+            isActive:true
+        });
+
+        if(!internship){
+            return res.status(404).json({message:'Internship doesnot exists or is not active'});
+        }
+
+        console.log('Internship found');
+
+        res.status(200).json({internship:internship});
+
+    }catch(err){
+    
+        console.log(err);
+        res.status(500).json({err:'Internal server error'});
+
+    }
+}
+
+
+module.exports = {createInternship, updateInternship, deleteInternship, viewInternship, viewInternshipById};
