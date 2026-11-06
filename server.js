@@ -8,10 +8,12 @@ const db=require('./config/db');
 //importing route files
 const userRoutes=require('./routes/userRoutes');
 const internshipRoutes=require('./routes/internshipRoutes');
+const applicationRoutes= require('./routes/applicationRoutes');
 
 //using route files
-app.use('/user',userRoutes);
-app.use('/internship',internshipRoutes);
+app.use('/api/user',userRoutes);
+app.use('/api/internship',internshipRoutes);
+app.use('/api/applications',applicationRoutes);
 
 
 

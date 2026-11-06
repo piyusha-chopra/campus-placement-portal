@@ -118,7 +118,7 @@ const viewInternshipById= async(req,res)=>{
         });
 
         if(!internship){
-            return res.status(404).json({message:'Internship doesnot exists or is not active'});
+            return res.status(404).json({message:'Internship not found or is not active'});
         }
 
         console.log('Internship found');
