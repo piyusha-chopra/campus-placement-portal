@@ -71,7 +71,7 @@ const applyInternship = async (req, res)=>{
 
 }
 
-//controller for viewing all applications for a particular internships 
+//controller for viewing all applications for a particular internships by recruiter
 const getInternshipApplications = async (req,res)=>{
     try{
 
@@ -157,5 +157,24 @@ const updateApplicationStatus= async(req,res)=>{
     }
 }
 
+//controller for viewing all applications of internships by students
+const getMyApplications= async(req,res)=>{
+    
+    try{
 
-module.exports = {applyInternship, getInternshipApplications, updateApplicationStatus};
+        const studentId=req.user.id;
+
+        const applications= await Application.find({student:studentId}).select('-createdAt -updatedAt -__v').populate('internship','title company location workMode stipend');
+
+        res.status(200).json({applications:applications});
+
+    }catch(err){
+
+        console.log(err);
+        res.status(500).json({ err: 'Internal server error' });
+
+    }
+}
+
+
+module.exports = {applyInternship, getInternshipApplications, updateApplicationStatus, getMyApplications};

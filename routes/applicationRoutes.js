@@ -2,8 +2,11 @@ const express= require('express');
 const router= express.Router();
 const jwtAuthMiddleware=require('../middleware/jwtAuthMiddleware');
 const roleMiddleware=require('../middleware/roleMiddleware');
-const { applyInternship, getInternshipApplications, updateApplicationStatus} = require('../controllers/applicationController');
+const { applyInternship, getInternshipApplications, updateApplicationStatus, getMyApplications} = require('../controllers/applicationController');
 
+
+//GET route to view all internships applications for students
+router.get('/my-applications', jwtAuthMiddleware, roleMiddleware('student'), getMyApplications);
 
 //POST route to create application
 router.post('/:internshipId/apply', jwtAuthMiddleware, roleMiddleware('student'),applyInternship );

@@ -8,14 +8,14 @@ const {createInternship,updateInternship,deleteInternship,viewInternship, viewIn
 //POST route to create internship
 router.post('/',jwtAuthMiddleware,roleMiddleware('recruiter'),createInternship);
 
+//GET route to view list of internships
+router.get('/internships',viewInternship);
+
 //PUT route to update internship
 router.put('/:id',jwtAuthMiddleware,roleMiddleware('recruiter'),updateInternship);
 
 //DELETE route to delete internship
 router.delete('/:id',jwtAuthMiddleware,roleMiddleware('recruiter'),deleteInternship);
-
-//GET route to view list of internships
-router.get('/internships',viewInternship);
 
 //GET route to view a particular internship using its ID
 router.get('/internships/:id',viewInternshipById);
